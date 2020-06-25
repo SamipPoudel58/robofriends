@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import SearchBox from "./SearchBox";
-import CardList from "./CardList";
-import Scroll from "./Scroll";
+import SearchBox from "../components/SearchBox";
+import CardList from "../components/CardList";
+import Scroll from "../components/Scroll";
 
 function App() {
   let [robofriends, updateRobots] = useState({
@@ -32,21 +32,24 @@ function App() {
     });
   }
 
-  let finalRobots = robofriends.robots.filter((robot) => {
-    return robot.name
-      .toLowerCase()
-      .includes(robofriends.searchField.toLowerCase());
+  const { robots, searchField } = robofriends;
+  let finalRobots = robots.filter((robot) => {
+    return robot.name.toLowerCase().includes(searchField.toLowerCase());
   });
 
-  return (
-    <div className="tc">
-      <h1 className="f1">Robofriends</h1>
-      <SearchBox onChange={changeList} />
-      <Scroll>
-        <CardList robots={finalRobots} />
-      </Scroll>
-    </div>
-  );
+  if (!robots.length) {
+    return <h1>Loading</h1>;
+  } else {
+    return (
+      <div className="tc">
+        <h1 className="f1">Robofriends</h1>
+        <SearchBox onChange={changeList} />
+        <Scroll>
+          <CardList robots={finalRobots} />
+        </Scroll>
+      </div>
+    );
+  }
 }
 
 export default App;
